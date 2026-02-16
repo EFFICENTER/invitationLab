@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Confirmaciones de Boda</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-light">
+    
+    <!-- ==========================================
+         PANTALLA DE LOGIN
+    ========================================== -->
+    <div id="login-container">
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-4">
+                                <h2 class="mb-3">🔐 Panel Admin</h2>
+                                <p class="text-muted">Gestión de confirmaciones</p>
+                            </div>
+                            
+                            <form id="login-form">
+                                <div class="mb-4">
+                                    <label for="admin-password" class="form-label fw-semibold">
+                                        Contraseña de administrador
+                                    </label>
+                                    <input 
+                                        type="password" 
+                                        class="form-control form-control-lg" 
+                                        id="admin-password" 
+                                        placeholder="Ingresa tu contraseña"
+                                        required
+                                        autofocus>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        Ingresar
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            <div id="login-error" class="alert alert-danger mt-3 d-none" role="alert"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         DASHBOARD PRINCIPAL
+    ========================================== -->
+    <div id="dashboard-container" class="d-none">
+        <!-- Header -->
+        <nav class="navbar navbar-dark bg-primary shadow-sm">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1">
+                    📊 Panel de Confirmaciones - Nuestra Boda
+                </span>
+                <a href="index.html" class="btn btn-outline-light btn-sm">
+                    Volver al sitio
+                </a>
+            </div>
+        </nav>
+
+        <div class="container-fluid py-4">
+            
+            <!-- Estadísticas -->
+            <div class="row g-3 mb-4" id="estadisticas-container">
+                <!-- Se llenarán dinámicamente -->
+            </div>
+
+            <!-- Tarjeta principal con tabla -->
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="mb-0 fw-bold">📋 Listado de Familias</h5>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-success" onclick="exportarCSV()">
+                                📥 Exportar CSV
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0">
+                            <thead class="table-light sticky-top">
+                                <tr>
+                                    <th class="fw-semibold">Código</th>
+                                    <th class="fw-semibold">Familia</th>
+                                    <th class="fw-semibold">Email</th>
+                                    <th class="fw-semibold text-center">Total</th>
+                                    <th class="fw-semibold text-center">Asisten</th>
+                                    <th class="fw-semibold text-center">No Asisten</th>
+                                    <th class="fw-semibold text-center">Pendientes</th>
+                                    <th class="fw-semibold text-center">Estado</th>
+                                    <th class="fw-semibold">Fecha Conf.</th>
+                                    <th class="fw-semibold text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-invitaciones-body">
+                                <!-- Se llenará dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL DE DETALLES
+    ========================================== -->
+    <div class="modal fade" id="modalDetalles" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalTitulo"></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="modalContenido">
+                    <!-- Se llenará dinámicamente -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.bundle.js"></script>
+    <script>
+        // ==========================================
+        // VARIABLES GLOBALES
+        // ==========================================
+        let datosCompletos = null;
+        let modalDetalles = null;
+
+        // ==========================================
+        // INICIALIZACIÓN
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            modalDetalles = new bootstrap.Modal(document.getElementById('modalDetalles'));
+        });
+
+        // ==========================================
+        // LOGIN
+        // ==========================================
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('admin-password').value;
+            const btnLogin = e.target.querySelector('button[type="submit"]');
+            
+            try {
+                btnLogin.disabled = true;
+                btnLogin.innerHTML = `
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Verificando...
+                `;
+
+                const response = await fetch('/api/obtenerTodasConfirmaciones', {
+                    headers: {
+                        'x-admin-password': password
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Contraseña incorrecta');
+                }
+
+                const data = await response.json();
+                datosCompletos = data;
+                
+                // Mostrar dashboard
+                document.getElementById('login-container').classList.add('d-none');
+                document.getElementById('dashboard-container').classList.remove('d-none');
+                
+                // Renderizar datos
+                mostrarEstadisticas(data.estadisticas);
+                mostrarTabla(data.invitaciones);
+
+            } catch (error) {
+                const errorDiv = document.getElementById('login-error');
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('d-none');
+                
+                btnLogin.disabled = false;
+                btnLogin.textContent = 'Ingresar';
+            }
+        });
+
+        // ==========================================
+        // MOSTRAR ESTADÍSTICAS
+        // ==========================================
+        function mostrarEstadisticas(stats) {
+            const estadisticas = [
+                {
+                    titulo: 'Familias Totales',
+                    valor: stats.totalFamilias,
+                    icono: '👨‍👩‍👧‍👦',
+                    color: 'primary'
+                },
+                {
+                    titulo: 'Invitados Totales',
+                    valor: stats.totalInvitados,
+                    icono: '👥',
+                    color: 'info'
+                },
+                {
+                    titulo: 'Confirman Asistencia',
+                    valor: stats.totalAsisten,
+                    icono: '✓',
+                    color: 'success'
+                },
+                {
+                    titulo: 'No Asisten',
+                    valor: stats.totalNoAsisten,
+                    icono: '✗',
+                    color: 'danger'
+                },
+                {
+                    titulo: 'Pendientes',
+                    valor: stats.totalPendientes,
+                    icono: '⏳',
+                    color: 'warning'
+                },
+                {
+                    titulo: 'Familias Confirmadas',
+                    valor: stats.familiasConfirmadas,
+                    icono: '✅',
+                    color: 'success'
+                }
+            ];
+
+            const container = document.getElementById('estadisticas-container');
+            container.innerHTML = '';
+
+            estadisticas.forEach(stat => {
+                const col = document.createElement('div');
+                col.className = 'col-12 col-sm-6 col-lg-4 col-xl-2';
+                col.innerHTML = `
+                    <div class="card border-0 shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <div class="fs-1 mb-2">${stat.icono}</div>
+                            <h2 class="display-5 fw-bold text-${stat.color} mb-1">${stat.valor}</h2>
+                            <p class="text-muted small mb-0">${stat.titulo}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        }
+
+        // ==========================================
+        // MOSTRAR TABLA
+        // ==========================================
+        function mostrarTabla(invitaciones) {
+            const tbody = document.getElementById('tabla-invitaciones-body');
+            tbody.innerHTML = '';
+
+            // Ordenar por estado (confirmados primero)
+            const ordenadas = [...invitaciones].sort((a, b) => {
+                if (a.confirmados > 0 && b.confirmados === 0) return -1;
+                if (a.confirmados === 0 && b.confirmados > 0) return 1;
+                return 0;
+            });
+
+            ordenadas.forEach(inv => {
+                const tr = document.createElement('tr');
+                tr.style.cursor = 'pointer';
+                
+                // Badge de estado
+                const estadoBadge = inv.confirmados > 0 
+                    ? '<span class="badge bg-success">Confirmado</span>'
+                    : '<span class="badge bg-warning text-dark">Pendiente</span>';
+                
+                // Fecha formateada
+                const fecha = inv.fechaConfirmacion 
+                    ? new Date(inv.fechaConfirmacion).toLocaleDateString('es-MX', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    })
+                    : '<span class="text-muted">-</span>';
+
+                tr.innerHTML = `
+                    <td><code class="text-primary">${inv.codigo}</code></td>
+                    <td class="fw-semibold">${inv.nombreFamilia}</td>
+                    <td class="text-muted small">${inv.email || '-'}</td>
+                    <td class="text-center"><span class="badge bg-secondary">${inv.totalInvitados}</span></td>
+                    <td class="text-center"><span class="badge bg-success">${inv.asisten}</span></td>
+                    <td class="text-center"><span class="badge bg-danger">${inv.noAsisten}</span></td>
+                    <td class="text-center"><span class="badge bg-warning text-dark">${inv.pendientes}</span></td>
+                    <td class="text-center">${estadoBadge}</td>
+                    <td class="small">${fecha}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-primary" onclick="mostrarDetalles(event, ${invitaciones.indexOf(inv)})">
+                            Ver detalle
+                        </button>
+                    </td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ==========================================
+        // MOSTRAR DETALLES EN MODAL
+        // ==========================================
+        function mostrarDetalles(event, index) {
+            event.stopPropagation();
+            
+            const inv = datosCompletos.invitaciones[index];
+            
+            document.getElementById('modalTitulo').textContent = inv.nombreFamilia;
+            
+            let contenido = `
+                <div class="mb-3">
+                    <p class="mb-2"><strong>Código:</strong> <code>${inv.codigo}</code></p>
+                    <p class="mb-2"><strong>Email:</strong> ${inv.email || 'No proporcionado'}</p>
+                    <p class="mb-0"><strong>Total invitados:</strong> ${inv.totalInvitados}</p>
+                </div>
+                <hr>
+                <h6 class="fw-bold mb-3">Invitados:</h6>
+                <div class="list-group">
+            `;
+            
+            inv.invitados.forEach(invitado => {
+                let badgeClass = 'bg-secondary';
+                let badgeText = 'Pendiente';
+                let iconoEstado = '⏳';
+                
+                if (invitado.confirmado) {
+                    if (invitado.asiste) {
+                        badgeClass = 'bg-success';
+                        badgeText = 'Asiste';
+                        iconoEstado = '✓';
+                    } else {
+                        badgeClass = 'bg-danger';
+                        badgeText = 'No asiste';
+                        iconoEstado = '✗';
+                    }
+                }
+                
+                contenido += `
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>${iconoEstado} ${invitado.nombre}</span>
+                        <span class="badge ${badgeClass}">${badgeText}</span>
+                    </div>
+                `;
+            });
+            
+            contenido += '</div>';
+            
+            if (inv.fechaConfirmacion) {
+                const fechaCompleta = new Date(inv.fechaConfirmacion).toLocaleString('es-MX', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                contenido += `
+                    <hr>
+                    <p class="text-muted small mb-0">
+                        <strong>Fecha de confirmación:</strong> ${fechaCompleta}
+                    </p>
+                `;
+            }
+            
+            document.getElementById('modalContenido').innerHTML = contenido;
+            modalDetalles.show();
+        }
+
+        // ==========================================
+        // EXPORTAR A CSV
+        // ==========================================
+        function exportarCSV() {
+            if (!datosCompletos) return;
+
+            // BOM para UTF-8 - esto hace que Excel reconozca los acentos correctamente
+            const BOM = '\uFEFF';
+            let csv = BOM + 'Código,Familia,Email,Nombre Invitado,Asiste,Confirmado\n';
+            
+            datosCompletos.invitaciones.forEach(inv => {
+                inv.invitados.forEach(invitado => {
+                    const asiste = invitado.confirmado 
+                        ? (invitado.asiste ? 'Sí' : 'No') 
+                        : 'Pendiente';
+                    
+                    const confirmado = invitado.confirmado ? 'Sí' : 'No';
+                    
+                    csv += `"${inv.codigo}","${inv.nombreFamilia}","${inv.email || ''}","${invitado.nombre}","${asiste}","${confirmado}"\n`;
+                });
+            });
+
+            // Crear y descargar archivo con encoding UTF-8
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `confirmaciones_boda_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

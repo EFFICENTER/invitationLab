@@ -1,0 +1,346 @@
+/* ==========================================================================
+   1. VARIABLES Y CONFIGURACIÓN BASE
+   ========================================================================== */
+:root {
+  --olivo-strong: #556B2F;
+  --olivo-regular: #808B6B;
+  --beige-lino: #fff9ed;
+  --rosa-pastel: #F2D5D5;
+  --white-shadow: rgba(255, 255, 255, 0.8);
+  --grey-shadow: rgba(190, 190, 190, 0.5);
+  --white-seda: #F9F6F2;
+}
+
+*{
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  /* outline: 2px solid red; */
+}
+
+div{z-index: 3}
+div.textura-papel{z-index: 0;}
+
+body {
+  background-color: var(--beige-lino);
+  margin: 0;
+  padding: 0;
+}
+
+.content-hidden {
+  display: none;
+  opacity: 0;
+}
+
+
+.homeText{
+  padding: 2rem;
+  z-index: 100 !important;
+  position: absolute;
+  top: 12%;
+  transform: translate(-50%, -50%);  
+}
+
+
+/* Galería - Contenedor de items */
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 0.375rem;
+    aspect-ratio: 1/1; /* Hace que todas las imágenes sean cuadradas */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+/* Efecto Zoom Sutil en Hover */
+.gallery-item:hover img {
+    transform: scale(1.08);
+}
+
+/* Overlay oscuro en hover (opcional) */
+.gallery-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+    pointer-events: none;
+}
+
+.gallery-item:hover::after {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+/* Modal Lightbox */
+#lightboxModal .modal-dialog {
+    max-width: 90vw;
+}
+
+#lightboxModal .modal-content {
+    background: rgba(0, 0, 0, 0.9) !important;
+}
+
+#lightboxModal img {
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+/* Botón cerrar mejorado */
+#lightboxModal .btn-close {
+    width: 2rem;
+    height: 2rem;
+    opacity: 0.8;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#lightboxModal .btn-close:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .gallery-item {
+        aspect-ratio: 1/1;
+    }
+    
+    #lightboxModal .modal-dialog {
+        max-width: 95vw;
+    }
+}
+
+
+/* ==========================================================================
+   2. TIPOGRAFÍA (MOBILE FIRST)
+   ========================================================================== */
+
+/* Estilos comunes para deshabilitar selección */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Ms Madi - Estilos Base */
+.ms-madi{
+  font-family: "Ms Madi", cursive;
+  font-weight: 400;
+  font-style: normal;
+  padding-top: 0;
+}
+
+.libre-caslon-display {
+  font-family: "Libre Caslon Display", serif;
+  font-weight: 400;
+  font-style: normal;
+} 
+
+.olivo-regular{
+  color: var(--olivo-regular);
+}
+.olivo-strong{
+  color: var(--olivo-strong);
+}
+.rosa-pastel{
+  color: var(--rosa-pastel);
+}
+.beige{
+  color: var(--beige-lino);
+  text-shadow: 1px 3px 0 #585858, 1px 13px 5px #585858;
+}
+
+
+
+.encabezado{
+
+  /* El texto nunca será menor a 1.5rem, crecerá al 5% del ancho de pantalla, 
+     pero nunca superará los 3rem */
+  font-size: clamp(1.5rem, 80vw, 3rem);
+}
+.subtitulo{
+  font-size: clamp(1.5rem,80vw,1.5rem);
+  }
+
+.texto{
+  font-size: clamp(0.5rem,5vw,1rem);
+}
+
+a.activo {
+  border-bottom: 1px solid var(--olivo-strong);
+  color: var(--olivo-strong);
+}
+a:hover {
+  border-bottom: 1px solid var(--olivo-strong);
+  color: var(--olivo-strong);
+}
+
+/* ==========================================================================
+   3. COMPONENTES (SOBRE, IMÁGENES, EFECTOS)
+   ========================================================================== */
+
+.blur {
+  filter: blur(4px) opacity(90%);
+}
+
+/* Contenedores de Imágenes */
+#envelopeClosedImage, 
+#envelopeOpenImage {
+  height: auto;
+  width: 100%; /* Más ancho en móvil */
+  transition: opacity 0.5s ease;
+}
+#envelopeButton{
+  width: 80vw;
+}
+
+.imgContainerSm {
+  width: 5vw;
+  height: auto;
+}
+
+#envelopeOpenImage {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#envelopeText {
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.home-picture {
+    width: 100%; /* Ajusta el ancho según sea necesario */
+    height: 100%; /* Ajusta la altura según sea necesario */
+    object-fit: cover; /* Asegura que la imagen cubra el contenedor */
+    object-position: bottom; /* Hace que la imagen se alinee en la parte inferior */
+}
+
+
+
+.homeContador{
+  z-index: 100 !important;
+  position: absolute;
+  bottom: 14%;
+
+
+}
+
+.bg-beige-lino {
+  background-color: var(--beige-lino);
+}
+.bg-white-seda {
+  background-color: var(--white-seda);
+}
+.bg-rosa-pastel {
+  background-color: var(--rosa-pastel);
+}
+.bg-olivo{
+  background-color: var(--olivo-regular);
+}
+
+.textura-papel {
+    position: relative;
+  /* Aseguramos que el contenido sea visible sobre la textura */
+  isolation: isolate; 
+
+}
+
+.textura-papel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  /* Imagen de textura sutil (fibras de papel) */
+  background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+  
+  /* Ajustamos la opacidad para que sea casi imperceptible (elegancia) */
+  opacity: 0.9; 
+  
+  /* Importante: permite hacer clic en los botones/texto debajo de la textura */
+  pointer-events: none; 
+  z-index: 1;
+}
+
+
+/* ==========================================================================
+   4. BREAKPOINTS (RESPONSIVE DESIGN)
+   ========================================================================== */
+
+/* Tablet (min-width: 768px) */
+@media (min-width: 768px) {
+
+.homeText{
+  padding: 2rem;
+  z-index: 100 !important;
+  position: absolute;
+  top: 12%;
+  right: 0%;
+  transform: translateY(-50%);  
+}
+
+  .ms-madi-olive-regular { font-size: 1.8rem; }  
+  .libre-caslon-display { font-size: 1.8rem; }
+  #envelopeClosedImage, 
+  #envelopeOpenImage {
+    width: 50vw;
+  }
+
+  .dresscode{
+    height: 70vh;
+    width: auto;
+  }
+}
+
+/* Escritorio (min-width: 1024px) */
+@media (min-width: 1024px) {
+
+.homeText{
+  padding: 2rem;
+  z-index: 100 !important;
+  position: absolute;
+  top: 14%;
+  right: 0%;
+  transform: translateY(-50%);  
+}
+
+  .ms-madi-olive-regular { font-size: 3rem; }  
+  .libre-caslon-display { font-size: 3rem; }
+
+  #envelopeClosedImage, 
+  #envelopeOpenImage {
+    width: 80%; /* Más pequeño y elegante en escritorio */
+  }
+
+  #envelopeText {
+    line-height: 5rem;
+  }
+
+  .encabezado{
+
+  /* El texto nunca será menor a 1.5rem, crecerá al 5% del ancho de pantalla, 
+     pero nunca superará los 3rem */
+  font-size: clamp(1.5rem, 80vw, 8rem);
+
+  }
+  .subtitulo{
+  font-size: clamp(1.5rem,80vw,4rem);
+  }
+  .texto{
+  font-size: clamp(1rem,5vw,1.5rem);
+  }
+}
+
+

@@ -1,0 +1,196 @@
+<!-- 
+  ================================================
+  SECCIÓN PARA AGREGAR A TU INDEX.HTML EXISTENTE
+  ================================================
+  Copia este código y pégalo donde quieras que aparezca 
+  la sección de confirmación en tu sitio web.
+  Usa SOLO clases de Bootstrap - sin CSS personalizado.
+-->
+
+<!-- OPCIÓN 1: Diseño Simple y Limpio -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="text-center mb-4">
+                    <h2 class="display-5 fw-bold mb-3">¿Nos acompañas?</h2>
+                    <p class="lead text-muted">
+                        Tu presencia es muy importante para nosotros.<br>
+                        Por favor, confirma tu asistencia.
+                    </p>
+                </div>
+                
+                <div class="card shadow-lg border-0">
+                    <div class="card-body p-4 p-md-5">
+                        <h5 class="card-title text-center mb-4">Confirmar Asistencia</h5>
+                        <p class="text-muted text-center mb-4">
+                            Ingresa el código que recibiste en tu invitación:
+                        </p>
+                        
+                        <form id="form-codigo-rapido">
+                            <div class="mb-3">
+                                <input 
+                                    type="text" 
+                                    class="form-control form-control-lg text-center text-uppercase" 
+                                    id="codigo-input"
+                                    placeholder="Ejemplo: FAM001"
+                                    required>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    Continuar →
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="text-center mt-4">
+                            <small class="text-muted">
+                                ¿No tienes código? <a href="#contacto">Contáctanos</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- OPCIÓN 2: Diseño con Fondo de Color (Comentado - Descomentar para usar) -->
+<!--
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="text-center mb-4">
+                    <h2 class="display-5 fw-bold mb-3">💒 Confirma tu Asistencia</h2>
+                    <p class="lead opacity-75">
+                        Nos encantaría contar con tu presencia
+                    </p>
+                </div>
+                
+                <div class="card border-0 shadow-lg">
+                    <div class="card-body p-4">
+                        <form id="form-codigo-rapido-v2">
+                            <div class="input-group input-group-lg mb-3">
+                                <input 
+                                    type="text" 
+                                    class="form-control text-uppercase" 
+                                    id="codigo-input-v2"
+                                    placeholder="Tu código aquí"
+                                    aria-label="Código de invitación"
+                                    required>
+                                <button class="btn btn-primary" type="submit">
+                                    <strong>Confirmar →</strong>
+                                </button>
+                            </div>
+                            <small class="text-muted d-block text-center">
+                                Ingresa el código de 6 caracteres de tu invitación
+                            </small>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+-->
+
+
+<!-- OPCIÓN 3: Diseño Minimalista con Icono (Comentado - Descomentar para usar) -->
+<!--
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 col-md-6">
+                <div class="mb-4">
+                    <div class="display-1 mb-3">💌</div>
+                    <h3 class="fw-bold">Confirma tu Asistencia</h3>
+                </div>
+                
+                <form id="form-codigo-rapido-v3" class="mb-3">
+                    <div class="row g-2">
+                        <div class="col-8">
+                            <input 
+                                type="text" 
+                                class="form-control form-control-lg text-uppercase" 
+                                id="codigo-input-v3"
+                                placeholder="Código"
+                                required>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                Ir
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <p class="text-muted small">
+                    Revisa tu invitación para encontrar tu código único
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+-->
+
+
+<!-- ================================================
+     JAVASCRIPT NECESARIO (No modificar)
+     ================================================ -->
+<script>
+// Versión 1 (Activado por defecto)
+document.getElementById('form-codigo-rapido')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const codigo = document.getElementById('codigo-input').value.trim().toUpperCase();
+    
+    if (codigo) {
+        window.location.href = `invitaciones.html?codigo=${codigo}`;
+    } else {
+        alert('Por favor, ingresa tu código de invitación');
+    }
+});
+
+// Versión 2 (Activar si usas la opción 2)
+document.getElementById('form-codigo-rapido-v2')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const codigo = document.getElementById('codigo-input-v2').value.trim().toUpperCase();
+    
+    if (codigo) {
+        window.location.href = `invitaciones.html?codigo=${codigo}`;
+    } else {
+        alert('Por favor, ingresa tu código de invitación');
+    }
+});
+
+// Versión 3 (Activar si usas la opción 3)
+document.getElementById('form-codigo-rapido-v3')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const codigo = document.getElementById('codigo-input-v3').value.trim().toUpperCase();
+    
+    if (codigo) {
+        window.location.href = `invitaciones.html?codigo=${codigo}`;
+    } else {
+        alert('Por favor, ingresa tu código de invitación');
+    }
+});
+</script>
+
+
+<!-- ================================================
+     NOTAS DE USO:
+     ================================================
+     
+     1. Elige UNA de las 3 opciones de diseño
+     2. La Opción 1 está activa por defecto
+     3. Para usar la Opción 2 o 3, descomenta ese bloque
+        y comenta la Opción 1
+     4. El JavaScript maneja las 3 versiones automáticamente
+     5. Todas las opciones usan SOLO clases de Bootstrap
+     6. Personaliza colores cambiando: 
+        - bg-primary → bg-success, bg-danger, bg-info, etc.
+        - btn-primary → btn-success, btn-dark, etc.
+        
+================================================ -->

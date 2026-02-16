@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>InvitationLab - Home</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Ms+Madi&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid p-0 position-fixed bg-white-seda">
+        <div class="envelopeOutsideText container-fluid p-0 position-absolute top-50 start-50 translate-middle text-center text-dark z-1">
+            <p id="envelopeText" class="fs-1 ms-madi p-0">
+                Acompáñanos a celebrar este gran día.
+            </p>
+        </div>
+        <div id="envelopeContainer" class="container-fluid position-relative vh-100 vw-100 overflow-hidden" aria-hidden="true">
+            <div class="container-fluid p-0 vh-100 vw-100 position-absolute top-0 start-0 textura-papel bg-white-seda" aria-hidden="true">
+                <img src="assets/images/marmolWallpaper.webp" alt="Textura de sobre" class="img-fluid w-100 h-100 object-fit-cover blur position-absolute top-0 start-0 zn-1 opacity-50">
+                <div id="envelopeButtonContainer" class="container-fluid vh-100 vw-100 p-0">
+                    <button id="envelopeButton" class="z-3 position-absolute top-50 start-50 translate-middle p-0 bg-transparent border-0 d-flex justify-content-center align-items-center">
+                        <div class="no-select position-absolute top-0 start-50 translate-middle-x" style="cursor: pointer;">
+                            <h1 id="hEnvelope" class="ms-madi olivo-regular subtitulo pt-3">
+                                Renata & Sergio
+                            </h1>
+                        </div>
+                        <img id="envelopeOpenImage" src="assets/images/envelopeOpen.webp" alt="Sobre abierto" class="position-absolute bottom-0 start-50 translate-middle-x img-fluid z-1">
+                        <img id="envelopeClosedImage" src="assets/images/envelope.webp" alt="Sobre cerrado" class="img-fluid z-1">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content-hidden">
+       <nav class="navbar navbar-expand-lg sticky-top bg-beige-lino p-0 z-3" style=" z-index: 1000!Important;">
+                <div class="textura-papel container-fluid p-2">
+                    <!-- Logo y Título -->
+                    <div class="row justify-content-center align-items-center p-0">
+                        <div class="imgContainerSm" style="width: 80px;">
+                            <a href="#home" class="d-flex">
+                                <img src="assets/images/logo.png" class="img-fluid" alt="Logo de la empresa">
+                            </a>
+                        </div>
+                        <h1 class="ms-madi olivo-strong fs-6 mb-0 text-center p-0">Renata & Sergio</h1>
+                    </div>
+                    <!-- Botón Hamburguesa -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <!-- Contenido Colapsable -->
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto libre-caslon-display fs-6">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#nosCasamos">Nos casamos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#cuandoDonde">Cuándo y dónde</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#dresscode">Dress Code</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#momentos">Momentos</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+        </nav>
+        <section id="home" class="overflow-hidden p-0 z-0">
+            <div class="container-fluid p-0 h-100 w-100 position-relative overflow-hidden">
+                <img src="assets/images/home.webp" class="home-picture" alt="Imagen de fondo de inicio">
+                <div class="beige text-center d-md-none d-block z-0 position-absolute top-0 pt-5 mt-5 start-50 translate-middle w-100">
+                        <div class="text-center rounded-4 ms-madi encabezado">
+                        Renata & Sergio
+                    </div>
+                    <div class="text-center libre-caslon-display fs-4 rounded-3">
+                        25 de abril 2026
+                    </div>
+                </div>
+                <div class="homeText z-0 beige d-md-block d-none">
+                    <div class="text-center rounded-4 ms-madi encabezado">
+                        Renata & Sergio
+                    </div>
+                    <div class="text-center libre-caslon-display fs-4 rounded-3">
+                        25 de abril 2026
+                    </div>
+                </div>
+                <div class="container-fluid homeContador z-0 beige">
+                    <div class="row justify-content-center libre-caslon-display contador">
+                        <div class="col col-md-1 p-0 m-0 rounded-3">
+                            <div class="text-center fs-2 dias">00</div>
+                            <div class="fs-6 text-center">Días</div>
+                        </div>
+                        <div class="col col-md-1 p-0 m-0 rounded-3">
+                            <div class="text-center fs-2 horas">00</div>
+                            <div class="fs-6 text-center">Horas</div>
+                        </div>
+                        <div class="col col-md-1 p-0 m-0 rounded-3">
+                            <div class="text-center fs-2 min">00</div>
+                            <div class="fs-6 text-center">Minutos</div>
+                        </div>
+                        <div class="col col-md-1 p-0 m-0 rounded-3">
+                            <div class="text-center fs-2 sec">00</div>
+                            <div class="fs-6 text-center">Segundos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="nosCasamos" class="container-fluid p-0">
+            <div class="container-fluid p-0 w-100 h-100 textura-papel">
+                <div class="text-center py-5">
+                    <div class="ms-madi olivo-strong olivo-regular encabezado">
+                        Renata & Sergio
+                    </div>
+                    <div class="libre-caslon-display olivo-strong subtitulo">
+                        ¡Nos casamos!
+                    </div>
+                    <div class="libre-caslon-display texto">
+                        Una propuesta, un SÍ y una decisión que tomamos juntos.
+                        Así comienza una nueva etapa en nuestras vidas.
+                    </div>
+                    <div class="libre-caslon-display texto">
+                        Con la bendición de Dios y nuestros padres deseamos compartir con ustedes la alegría de nuestro matrimonio.
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="cuandoDonde">
+            <div class="container-fluid p-0 overflow-hidden">
+                <div class="container-fluid p-0 overflow-hidden w-100 h-100">
+                    <div class="container-fluid py-5 textura-papel">
+                        <div class="text-center ms-madi olivo-strong olivo-regular encabezado">
+                            Save the Date
+                        </div>
+                        <div class="text-center olivo-strong libre-caslon-display subtitulo rounded-3">
+                            25 de abril 2026
+                        </div>
+                        <div class="row justify-content-center libre-caslon-display olivo-regular py-5 contador">
+                            <div class="col-2 p-0 m-0 rounded-3">
+                                <div class="text-center fs-2 dias">00</div>
+                                <div class="fs-6 text-center">Días</div>
+                            </div>
+                            <div class="col-2 p-0 m-0 rounded-3">
+                                <div class="text-center fs-2 horas">00</div>
+                                <div class="fs-6 text-center">Horas</div>
+                            </div>
+                            <div class="col-2 p-0 m-0 rounded-3">
+                                <div class="text-center fs-2 min">00</div>
+                                <div class="fs-6 text-center">Minutos</div>
+                            </div>
+                            <div class="col-2 p-0 m-0 rounded-3">
+                                <div class="text-center fs-2 sec">00</div>
+                                <div class="fs-6 text-center">Segundos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid p-0 textura-papel">
+                <div class="py-5">
+                    <p class="text-center ms-madi olivo-regular encabezado">Agrégalo a tu calendario</p>
+                </div>
+                <div class="mx-auto row container-fluid p-0 justify-content-evenly align-items-center text-center libre-caslon-display fs-6 pb-5">
+                    <a href="/assets/events/BodaRenataSergio.ics" download class="col-5 col-md-3 text-decoration-none bg-rosa-pastel bg-olivo beige p-4 rounded-2">iOS</a>
+                    <a href="https://calendar.app.google/AnqMvsYsyGsbA8uC9" class="col-5 col-md-3 text-decoration-none bg-rosa-pastel bg-olivo beige p-4 rounded-2">Google Calendar</a>
+                </div>
+            </div>
+        </section>
+        <section class="container-fluid p-0">
+            <div class="container-fluid p-0 vh-100 vw-100 overflow-hidden">
+                <div class="text-center ms-madi olivo-strong olivo-regular encabezado textura-papel">
+                    Lugar            
+                </div>
+                <div class="container-fluid p-0 overflow-hidden w-100 h-100 position-relative textura-papel">
+                    <div class="position-absolute top-50 start-50 translate-middle text-center">
+                        <div class="row justify-content-evenly align-items-center g-2 vh-100 vw-100">
+                            <div class="col-md-5 col-12 bg-beige libre-caslon-display position-relative">
+                                <img src="/assets/images/WhatsApp Image 2026-02-06 at 16.38.46.jpeg" class="w-100 h-100 object-fit-cover object-fit-bottom blur z-n1" alt="Ceremonia">
+                                <div class="position-absolute top-50 start-50 translate-middle text-center beige shadow-lg z-1 px-3">
+                                    <p class="fs-1">Ceremonia</p>
+                                    <p class="fs-6">15:00 horas</p>
+                                    <p class="fs-6">C. Ciruelo No. 1300, San Francisco, 52104 San Mateo Atenco, Méx.</p>
+                                    <a href="https://maps.app.goo.gl/62v766AW7DiEousd7" target="_blank" class="beige text-decoration-none fs-6">Ubicación en Google Maps</a>
+                                </div>
+                            </div>
+                            <div class="col-md-5 col-12 bg-beige libre-caslon-display position-relative">
+                                <img src="/assets/images/WhatsApp Image 2026-02-06 at 21.52.35.jpeg" class="w-100 h-100 object-fit-cover object-fit-bottom blur z-n1" alt="Recepción">
+                                <div class="position-absolute top-50 start-50 translate-middle text-center beige shadow-lg z-1 px-3">
+                                    <p class="fs-1">Recepción</p>
+                                    <p class="fs-6">16:00 hrs</p>
+                                    <p class="fs-6">C. Ciruelo No. 1300, San Francisco, 52104 San Mateo Atenco, Méx.</p>
+                                    <a href="https://maps.app.goo.gl/62v766AW7DiEousd7" target="_blank" class="beige text-decoration-none fs-6">Ubicación en Google Maps</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="dresscode" class="container-fluid">
+            <div class="row justify-content-evenly align-items-center pb-5 textura-papel d-none d-md-flex">
+                <p class="encabezado ms-madi olivo-regular text-center z-3 m-0">Dress Code</p>
+                <div class="col-md-4 col-12 bg-beige libre-caslon-display position-relative d-flex flex-row justify-content-center py-5">
+                    <img src="/assets/images/malecivil.png" class="object-fit-contain z-n1 dresscode" alt="Ejemplo de vestimenta hombre">
+                    <div class="position-absolute top-50 start-50 w-50 translate-middle text-center beige shadow-lg z-1">
+                        <p class="fs-1">Hombre</p>
+                        <a class="fs-6 beige" href="https://mx.pinterest.com/renataurdapilleta/dresscode-hombres/?invite_code=6c8cb429a5504ae0a912f4af922daf38&sender=849350948383026582">Ver ejemplos</a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12 bg-beige libre-caslon-display position-relative d-flex flex-row justify-content-center py-5">
+                    <img src="/assets/images/femalecivil.png" class="object-fit-contain z-n1 dresscode" alt="Ejemplo de vestimenta mujer">
+                    <div class="position-absolute top-50 start-50 w-50 translate-middle text-center beige shadow-lg z-1">
+                        <p class="fs-1">Mujer</p>
+                        <a class="fs-6 beige" href="https://mx.pinterest.com/renataurdapilleta/dresscode-mujeres/?invite_code=e229cbfafd9842e88079b08074fbf643&sender=849350948383026582">Ver ejemplos</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-evenly align-items-center pb-5 textura-papel d-md-none">
+                <p class="encabezado ms-madi olivo-regular text-center z-3 m-0">Dress Code</p>
+                <div class="col-md-4 col-6 bg-beige libre-caslon-display position-relative d-flex flex-row justify-content-center py-1">
+                    <img src="/assets/images/malecivil.png" class="img-fluid object-fit-contain z-n1" alt="Ejemplo de vestimenta hombre">
+                    <div class="position-absolute top-50 start-50 w-50 translate-middle text-center beige shadow-lg z-1">
+                        <p class="fs-1">Hombre</p>
+                        <a class="fs-6 beige" href="https://mx.pinterest.com/renataurdapilleta/dresscode-hombres/?invite_code=6c8cb429a5504ae0a912f4af922daf38&sender=849350948383026582">Ver ejemplos</a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-6 bg-beige libre-caslon-display position-relative d-flex flex-row justify-content-center py-1">
+                    <img src="/assets/images/femalecivil.png" class="img-fluid object-fit-contain z-n1" alt="Ejemplo de vestimenta mujer">
+                    <div class="position-absolute top-50 start-50 w-50 translate-middle text-center beige shadow-lg z-1">
+                        <p class="fs-1">Mujer</p>
+                        <a class="fs-6 beige" href="https://mx.pinterest.com/renataurdapilleta/dresscode-mujeres/?invite_code=e229cbfafd9842e88079b08074fbf643&sender=849350948383026582">Ver ejemplos</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+    </footer>
+    <script src="js/anime.esm.min.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script type="module" src="js/mainCivil.js"></script>
+</body>
+</html>

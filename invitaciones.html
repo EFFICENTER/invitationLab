@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Asistencia - Nuestra Boda</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-light">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                
+                <!-- LOADING -->
+                <div id="loading" class="text-center py-5">
+                    <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <h5 class="text-muted">Cargando tu invitación...</h5>
+                </div>
+
+                <!-- ERROR -->
+                <div id="error-container" class="d-none">
+                    <div class="card border-danger shadow-sm">
+                        <div class="card-body text-center p-5">
+                            <div class="display-1 text-danger mb-3">❌</div>
+                            <h3 class="card-title text-danger mb-3">Error</h3>
+                            <p id="error-message" class="card-text text-muted mb-4"></p>
+                            <a href="index.html" class="btn btn-secondary">
+                                ← Volver al inicio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORMULARIO DE CONFIRMACIÓN -->
+                <div id="formulario-container" class="d-none">
+                    <div class="card shadow-lg border-0">
+                        <!-- Header -->
+                        <div class="card-header bg-primary text-white text-center py-4">
+                            <h2 class="mb-0">💒 Confirmar Asistencia</h2>
+                        </div>
+                        
+                        <!-- Body -->
+                        <div class="card-body p-4 p-md-5">
+                            <!-- Nombre de la familia -->
+                            <div class="text-center mb-4">
+                                <h3 id="nombre-familia" class="h4 fw-bold text-primary"></h3>
+                                <p class="text-muted mb-0">
+                                    Por favor, confirma la asistencia de cada invitado
+                                </p>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <!-- Formulario -->
+                            <form id="form-confirmacion">
+                                <div id="lista-invitados" class="mb-4">
+                                    <!-- Se llenará dinámicamente -->
+                                </div>
+
+                                <!-- Botón enviar -->
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary btn-lg py-3">
+                                        <span class="fw-bold">✓ Confirmar Asistencia</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="card-footer bg-light text-center text-muted py-3">
+                            <small>Gracias por tomarte el tiempo de confirmar 💕</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MENSAJE DE ÉXITO -->
+                <div id="success-container" class="d-none">
+                    <div class="card border-success shadow-lg">
+                        <div class="card-body text-center p-5">
+                            <div class="display-1 mb-3">🎉</div>
+                            <h2 class="card-title text-success mb-3">¡Confirmación Exitosa!</h2>
+                            <p class="card-text lead text-muted mb-4">
+                                Gracias por confirmar tu asistencia.<br>
+                                ¡Nos vemos en la boda!
+                            </p>
+                            <a href="index.html" class="btn btn-primary btn-lg">
+                                Volver al inicio
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+        // ==========================================
+        // CONFIGURACIÓN Y VARIABLES
+        // ==========================================
+        const urlParams = new URLSearchParams(window.location.search);
+        const codigo = urlParams.get('codigo');
+
+        // ==========================================
+        // INICIALIZACIÓN
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!codigo) {
+                mostrarError('No se proporcionó un código de invitación válido.');
+                return;
+            }
+
+            await cargarInvitacion();
+        });
+
+        // ==========================================
+        // CARGAR DATOS DE LA INVITACIÓN
+        // ==========================================
+        async function cargarInvitacion() {
+            try {
+                mostrarElemento('loading');
+
+                const response = await fetch(`/api/obtenerInvitacion?codigo=${codigo}`);
+                
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error('Código de invitación no válido. Por favor, verifica el enlace.');
+                    }
+                    throw new Error('Error al cargar la invitación. Intenta nuevamente.');
+                }
+
+                const data = await response.json();
+                mostrarFormulario(data);
+
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError(error.message);
+            } finally {
+                ocultarElemento('loading');
+            }
+        }
+
+        // ==========================================
+        // MOSTRAR FORMULARIO CON DATOS
+        // ==========================================
+        function mostrarFormulario(invitacion) {
+            // Mostrar nombre de familia
+            document.getElementById('nombre-familia').textContent = invitacion.nombreFamilia;
+
+            // Crear lista de invitados
+            const listaInvitados = document.getElementById('lista-invitados');
+            listaInvitados.innerHTML = '';
+
+            invitacion.invitados.forEach((invitado, index) => {
+                const divInvitado = crearCardInvitado(invitado, index);
+                listaInvitados.appendChild(divInvitado);
+            });
+
+            mostrarElemento('formulario-container');
+        }
+
+        // ==========================================
+        // CREAR CARD DE INVITADO
+        // ==========================================
+        function crearCardInvitado(invitado, index) {
+            const div = document.createElement('div');
+            div.className = 'card mb-3 border-start border-primary border-4';
+            
+            // Badge de estado si ya confirmó
+            let badgeEstado = '';
+            if (invitado.confirmado) {
+                const badgeClass = invitado.asiste ? 'bg-success' : 'bg-danger';
+                const badgeText = invitado.asiste ? 'Ya confirmaste: Sí asiste' : 'Ya confirmaste: No asiste';
+                badgeEstado = `<span class="badge ${badgeClass} mb-2">${badgeText}</span>`;
+            }
+
+            div.innerHTML = `
+                <div class="card-body">
+                    <h5 class="card-title mb-3 fw-bold">${invitado.nombre}</h5>
+                    ${badgeEstado}
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" 
+                               type="radio" 
+                               name="asiste_${invitado.id}" 
+                               id="si_${invitado.id}" 
+                               value="true"
+                               ${invitado.asiste === true ? 'checked' : ''}
+                               required>
+                        <label class="form-check-label fw-semibold text-success" for="si_${invitado.id}">
+                            ✓ Sí, asistiré
+                        </label>
+                    </div>
+                    
+                    <div class="form-check">
+                        <input class="form-check-input" 
+                               type="radio" 
+                               name="asiste_${invitado.id}" 
+                               id="no_${invitado.id}" 
+                               value="false"
+                               ${invitado.asiste === false ? 'checked' : ''}
+                               required>
+                        <label class="form-check-label fw-semibold text-danger" for="no_${invitado.id}">
+                            ✗ No podré asistir
+                        </label>
+                    </div>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        // ==========================================
+        // ENVIAR CONFIRMACIÓN
+        // ==========================================
+        document.getElementById('form-confirmacion').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Recopilar confirmaciones
+            const confirmaciones = [];
+            const inputs = document.querySelectorAll('input[type="radio"]:checked');
+            
+            inputs.forEach(input => {
+                const id = parseInt(input.name.split('_')[1]);
+                const asiste = input.value === 'true';
+                confirmaciones.push({ id, asiste });
+            });
+
+            try {
+                const btnSubmit = e.target.querySelector('button[type="submit"]');
+                btnSubmit.disabled = true;
+                btnSubmit.innerHTML = `
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    <span>Guardando...</span>
+                `;
+
+                const response = await fetch('/api/confirmarAsistencia', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        codigo: codigo,
+                        confirmaciones: confirmaciones
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error al guardar la confirmación');
+                }
+
+                await response.json();
+                mostrarExito();
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al guardar la confirmación. Por favor, intenta nuevamente.');
+                
+                const btnSubmit = document.querySelector('button[type="submit"]');
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = '<span class="fw-bold">✓ Confirmar Asistencia</span>';
+            }
+        });
+
+        // ==========================================
+        // FUNCIONES AUXILIARES
+        // ==========================================
+        function mostrarError(mensaje) {
+            document.getElementById('error-message').textContent = mensaje;
+            mostrarElemento('error-container');
+        }
+
+        function mostrarExito() {
+            ocultarElemento('formulario-container');
+            mostrarElemento('success-container');
+        }
+
+        function mostrarElemento(id) {
+            const elemento = document.getElementById(id);
+            elemento.classList.remove('d-none');
+        }
+
+        function ocultarElemento(id) {
+            const elemento = document.getElementById(id);
+            elemento.classList.add('d-none');
+        }
+    </script>
+</body>
+</html>
