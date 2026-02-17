@@ -1,82 +1,96 @@
-const azure = require('azure-storage');
+const { TableClient } = require("@azure/data-tables");
 
 module.exports = async function (context, req) {
-    // Validar contraseña de administrador (opcional pero recomendado)
-    const password = req.headers['x-admin-password'];
-    const adminPassword = process.env.ADMIN_PASSWORD || 'cambiar-esto-123'; // Configurar en Azure
-    
+    context.log('Obteniendo todas las confirmaciones...');
+
+    // Validar contraseña de admin
+    const password = req.query.password || (req.body && req.body.password);
+    const adminPassword = process.env.ADMIN_PASSWORD || 'test123';
+
     if (password !== adminPassword) {
         context.res = {
             status: 401,
-            body: { error: "No autorizado" }
+            body: { error: "Contraseña incorrecta" }
         };
         return;
     }
-    
+
     try {
         const connectionString = process.env.AzureWebJobsStorage;
-        const tableService = azure.createTableService(connectionString);
-        
-        // Obtener todas las invitaciones
-        const invitaciones = await new Promise((resolve, reject) => {
-            const query = new azure.TableQuery()
-                .where('PartitionKey eq ?', 'familia');
-            
-            tableService.queryEntities('invitaciones', query, null, (error, result) => {
-                if (error) reject(error);
-                else resolve(result.entries);
-            });
+        const tableClient = TableClient.fromConnectionString(connectionString, "invitaciones");
+
+        // Obtener todas las entidades
+        const entities = tableClient.listEntities({
+            queryOptions: { filter: `PartitionKey eq 'familia'` }
         });
+
+        const invitaciones = [];
         
-        // Formatear datos
-        const datos = invitaciones.map(inv => {
-            const invitados = JSON.parse(inv.invitados._);
-            const totalInvitados = invitados.length;
-            const confirmados = invitados.filter(i => i.confirmado).length;
-            const asisten = invitados.filter(i => i.asiste === true).length;
-            const noAsisten = invitados.filter(i => i.asiste === false).length;
-            
-            return {
-                codigo: inv.RowKey._,
-                nombreFamilia: inv.nombreFamilia._,
-                email: inv.email ? inv.email._ : '',
+        for await (const entity of entities) {
+            const invitados = typeof entity.invitados === 'string' 
+                ? JSON.parse(entity.invitados) 
+                : entity.invitados;
+
+            invitaciones.push({
+                codigo: entity.rowKey,
+                nombreFamilia: entity.nombreFamilia,
                 invitados: invitados,
-                totalInvitados: totalInvitados,
-                confirmados: confirmados,
-                asisten: asisten,
-                noAsisten: noAsisten,
-                pendientes: totalInvitados - confirmados,
-                fechaConfirmacion: inv.fechaConfirmacion ? inv.fechaConfirmacion._ : null
-            };
+                fechaConfirmacion: entity.fechaConfirmacion || null
+            });
+        }
+
+        // Calcular estadísticas
+        let totalInvitados = 0;
+        let totalAsisten = 0;
+        let totalNoAsisten = 0;
+        let totalPendientes = 0;
+        let familiasConfirmadas = 0;
+
+        invitaciones.forEach(inv => {
+            let familiaConfirmada = false;
+            
+            inv.invitados.forEach(invitado => {
+                totalInvitados++;
+                if (invitado.confirmado) {
+                    familiaConfirmada = true;
+                    if (invitado.asiste) {
+                        totalAsisten++;
+                    } else {
+                        totalNoAsisten++;
+                    }
+                } else {
+                    totalPendientes++;
+                }
+            });
+
+            if (familiaConfirmada) {
+                familiasConfirmadas++;
+            }
         });
-        
-        // Estadísticas generales
-        const estadisticas = {
-            totalFamilias: datos.length,
-            familiasConfirmadas: datos.filter(d => d.confirmados > 0).length,
-            familiasPendientes: datos.filter(d => d.confirmados === 0).length,
-            totalInvitados: datos.reduce((sum, d) => sum + d.totalInvitados, 0),
-            totalAsisten: datos.reduce((sum, d) => sum + d.asisten, 0),
-            totalNoAsisten: datos.reduce((sum, d) => sum + d.noAsisten, 0),
-            totalPendientes: datos.reduce((sum, d) => sum + d.pendientes, 0)
-        };
-        
+
         context.res = {
             status: 200,
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: {
-                estadisticas: estadisticas,
-                invitaciones: datos
+                invitaciones: invitaciones,
+                estadisticas: {
+                    totalFamilias: invitaciones.length,
+                    totalInvitados: totalInvitados,
+                    totalAsisten: totalAsisten,
+                    totalNoAsisten: totalNoAsisten,
+                    totalPendientes: totalPendientes,
+                    familiasConfirmadas: familiasConfirmadas
+                }
             }
         };
-        
+
     } catch (error) {
-        context.log.error('Error al obtener confirmaciones:', error);
+        context.log.error('Error:', error);
         context.res = {
             status: 500,
-            body: { error: "Error al procesar la solicitud" }
+            body: { error: "Error al obtener las confirmaciones" }
         };
     }
 };

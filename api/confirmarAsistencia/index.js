@@ -1,99 +1,64 @@
-const azure = require('azure-storage');
+const { TableClient } = require("@azure/data-tables");
 
 module.exports = async function (context, req) {
-    const { codigo, confirmaciones } = req.body;
-    
-    // Validar datos
-    if (!codigo || !confirmaciones || !Array.isArray(confirmaciones)) {
+    context.log('Confirmando asistencia...');
+
+    const { codigo, invitados } = req.body;
+
+    if (!codigo || !invitados) {
         context.res = {
             status: 400,
-            body: { error: "Datos inválidos" }
+            body: { error: "Código e invitados son requeridos" }
         };
         return;
     }
-    
+
     try {
         const connectionString = process.env.AzureWebJobsStorage;
-        const tableService = azure.createTableService(connectionString);
-        
-        // Verificar que el código existe
-        const invitacion = await new Promise((resolve, reject) => {
-            tableService.retrieveEntity(
-                'invitaciones',
-                'familia',
-                codigo,
-                (error, result) => {
-                    if (error) {
-                        if (error.statusCode === 404) {
-                            resolve(null);
-                        } else {
-                            reject(error);
-                        }
-                    } else {
-                        resolve(result);
-                    }
-                }
-            );
-        });
-        
-        if (!invitacion) {
+        const tableClient = TableClient.fromConnectionString(connectionString, "invitaciones");
+
+        // Obtener la entidad existente
+        const entity = await tableClient.getEntity("familia", codigo);
+
+        if (!entity) {
             context.res = {
                 status: 404,
                 body: { error: "Código de invitación no válido" }
             };
             return;
         }
-        
-        // Actualizar invitados con las confirmaciones
-        const invitadosActuales = JSON.parse(invitacion.invitados._);
-        
-        confirmaciones.forEach(conf => {
-            const invitado = invitadosActuales.find(i => i.id === conf.id);
-            if (invitado) {
-                invitado.asiste = conf.asiste;
-                invitado.confirmado = true;
-            }
-        });
-        
-        // Preparar entidad actualizada
-        const entGen = azure.TableUtilities.entityGenerator;
-        const entidadActualizada = {
-            PartitionKey: entGen.String('familia'),
-            RowKey: entGen.String(codigo),
-            nombreFamilia: entGen.String(invitacion.nombreFamilia._),
-            email: entGen.String(invitacion.email ? invitacion.email._ : ''),
-            invitados: entGen.String(JSON.stringify(invitadosActuales)),
-            fechaConfirmacion: entGen.DateTime(new Date())
-        };
-        
+
+        // Actualizar invitados
+        entity.invitados = JSON.stringify(invitados);
+        entity.fechaConfirmacion = new Date().toISOString();
+
         // Actualizar en Table Storage
-        await new Promise((resolve, reject) => {
-            tableService.replaceEntity(
-                'invitaciones',
-                entidadActualizada,
-                (error) => {
-                    if (error) reject(error);
-                    else resolve();
-                }
-            );
-        });
-        
+        await tableClient.updateEntity(entity, "Replace");
+
         context.res = {
             status: 200,
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: {
-                mensaje: "¡Confirmación guardada exitosamente!",
-                confirmaciones: invitadosActuales
+                success: true,
+                mensaje: "Confirmación guardada exitosamente"
             }
         };
-        
+
     } catch (error) {
-        context.log.error('Error al confirmar asistencia:', error);
-        context.res = {
-            status: 500,
-            body: { error: "Error al procesar la confirmación" }
-        };
+        context.log.error('Error:', error);
+        
+        if (error.statusCode === 404) {
+            context.res = {
+                status: 404,
+                body: { error: "Código de invitación no válido" }
+            };
+        } else {
+            context.res = {
+                status: 500,
+                body: { error: "Error al guardar la confirmación" }
+            };
+        }
     }
 };

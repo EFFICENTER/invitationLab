@@ -1,80 +1,63 @@
-const azure = require('azure-storage');
+const { TableClient } = require("@azure/data-tables");
 
 module.exports = async function (context, req) {
-    const codigo = req.query.codigo;
-    
-    // Validar que se envió el código
+    context.log('Obteniendo invitación...');
+
+    const codigo = req.query.codigo || (req.body && req.body.codigo);
+
     if (!codigo) {
         context.res = {
             status: 400,
-            body: { error: "Código de invitación requerido" }
+            body: { error: "Por favor, proporciona un código de invitación" }
         };
         return;
     }
-    
+
     try {
-        // Conectar a Table Storage
         const connectionString = process.env.AzureWebJobsStorage;
-        const tableService = azure.createTableService(connectionString);
-        
-        // Crear tabla si no existe (solo en primera ejecución)
-        await new Promise((resolve, reject) => {
-            tableService.createTableIfNotExists('invitaciones', (error) => {
-                if (error) reject(error);
-                else resolve();
-            });
-        });
-        
-        // Buscar invitación por código
-        const invitacion = await new Promise((resolve, reject) => {
-            tableService.retrieveEntity(
-                'invitaciones',
-                'familia', // PartitionKey
-                codigo,    // RowKey
-                (error, result) => {
-                    if (error) {
-                        if (error.statusCode === 404) {
-                            resolve(null);
-                        } else {
-                            reject(error);
-                        }
-                    } else {
-                        resolve(result);
-                    }
-                }
-            );
-        });
-        
-        if (!invitacion) {
+        const tableClient = TableClient.fromConnectionString(connectionString, "invitaciones");
+
+        // Buscar la invitación por código
+        const entity = await tableClient.getEntity("familia", codigo);
+
+        if (!entity) {
             context.res = {
                 status: 404,
                 body: { error: "Código de invitación no válido" }
             };
             return;
         }
-        
-        // Parsear invitados (están guardados como JSON string)
-        const invitados = JSON.parse(invitacion.invitados._);
-        
-        // Devolver solo los datos necesarios
+
+        // Parsear invitados (guardados como JSON string)
+        const invitados = typeof entity.invitados === 'string' 
+            ? JSON.parse(entity.invitados) 
+            : entity.invitados;
+
         context.res = {
             status: 200,
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             },
             body: {
-                codigo: invitacion.RowKey._,
-                nombreFamilia: invitacion.nombreFamilia._,
-                invitados: invitados,
-                email: invitacion.email ? invitacion.email._ : null
+                codigo: entity.rowKey,
+                nombreFamilia: entity.nombreFamilia,
+                invitados: invitados
             }
         };
-        
+
     } catch (error) {
-        context.log.error('Error al obtener invitación:', error);
-        context.res = {
-            status: 500,
-            body: { error: "Error al procesar la solicitud" }
-        };
+        context.log.error('Error:', error);
+        
+        if (error.statusCode === 404) {
+            context.res = {
+                status: 404,
+                body: { error: "Código de invitación no válido" }
+            };
+        } else {
+            context.res = {
+                status: 500,
+                body: { error: "Error al obtener la invitación" }
+            };
+        }
     }
 };

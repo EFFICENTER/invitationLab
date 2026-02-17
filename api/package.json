@@ -1,13 +1,17 @@
 {
   "name": "boda-api",
   "version": "1.0.0",
-  "description": "Azure Functions para confirmación de invitaciones",
+  "description": "Azure Functions para sistema de confirmaciones de boda",
+  "main": "index.js",
   "scripts": {
     "start": "func start",
-    "test": "echo \"No tests yet\""
+    "test": "echo \"No tests specified\""
   },
   "dependencies": {
-    "azure-storage": "^2.10.7"
+    "@azure/data-tables": "^13.2.2"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
