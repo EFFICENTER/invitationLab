@@ -3,13 +3,28 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>InvitationLab - Home</title>
+    <title>Renata & Sergio - Nuestra Boda</title>
+    
+    <!-- Preload de recursos críticos -->
+    <link rel="preload" href="css/bootstrap.min.css" as="style">
+    <link rel="preload" href="css/styles.css" as="style">
+    <link rel="preload" href="assets/images/envelope.webp" as="image">
+    <link rel="preload" href="assets/images/envelopeOpen.webp" as="image">
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Fonts con display=swap para mejor performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Ms+Madi&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    
+    <!-- Meta tags para SEO y redes sociales -->
+    <meta name="description" content="Acompáñanos a celebrar la boda de Renata y Sergio - 7 de noviembre 2026 en Dreams Huatulco">
+    <meta property="og:title" content="Boda Renata & Sergio">
+    <meta property="og:description" content="Acompáñanos a celebrar este gran día - 7 de noviembre 2026">
 </head>
 <body>
     <div class="container-fluid p-0 position-fixed bg-white-seda">
@@ -20,7 +35,12 @@
         </div>
         <div id="envelopeContainer" class="container-fluid position-relative vh-100 vw-100 overflow-hidden" aria-hidden="true">
             <div class="container-fluid p-0 vh-100 vw-100 position-absolute top-0 start-0 textura-papel bg-white-seda" aria-hidden="true">
-                <img src="assets/images/marmolWallpaper.webp" alt="Textura de sobre" class="img-fluid w-100 h-100 object-fit-cover blur position-absolute top-0 start-0 zn-1 opacity-50">
+                <!-- EAGER: Fondo visible inmediatamente -->
+                <img src="assets/images/marmolWallpaper.webp" 
+                     alt="Textura de sobre" 
+                     class="img-fluid w-100 h-100 object-fit-cover blur position-absolute top-0 start-0 zn-1 opacity-50"
+                     loading="eager"
+                     fetchpriority="high">
                 <div id="envelopeButtonContainer" class="container-fluid vh-100 vw-100 p-0">
                     <button id="envelopeButton" class="z-3 position-absolute top-50 start-50 translate-middle p-0 bg-transparent border-0 d-flex justify-content-center align-items-center">
                         <div class="no-select position-absolute top-0 start-50 translate-middle-x" style="cursor: pointer;">
@@ -28,56 +48,78 @@
                                 Renata & Sergio
                             </h1>
                         </div>
-                        <img id="envelopeOpenImage" src="assets/images/envelopeOpen.webp" alt="Sobre abierto" class="position-absolute bottom-0 start-50 translate-middle-x img-fluid z-1">
-                        <img id="envelopeClosedImage" src="assets/images/envelope.webp" alt="Sobre cerrado" class="img-fluid z-1">
+                        <!-- EAGER: Sobres de la animación principal -->
+                        <img id="envelopeOpenImage" 
+                             src="assets/images/envelopeOpen.webp" 
+                             alt="Sobre abierto" 
+                             class="position-absolute bottom-0 start-50 translate-middle-x img-fluid z-1"
+                             loading="eager"
+                             fetchpriority="high">
+                        <img id="envelopeClosedImage" 
+                             src="assets/images/envelope.webp" 
+                             alt="Sobre cerrado" 
+                             class="img-fluid z-1"
+                             loading="eager"
+                             fetchpriority="high">
                     </button>
                 </div>
             </div>
         </div>
     </div>
     <div class="content-hidden">
-        <nav class="navbar navbar-expand-lg sticky-top bg-beige-lino p-0 z-3" style=" z-index: 1000!Important;">
-                <div class="textura-papel container-fluid p-2">
-                    <!-- Logo y Título -->
-                    <div class="row justify-content-center align-items-center p-0">
-                        <div class="imgContainerSm" style="width: 80px;">
-                            <a href="#home" class="d-flex">
-                                <img src="assets/images/logo.png" class="img-fluid" alt="Logo de la empresa">
-                            </a>
-                        </div>
-                        <h1 class="ms-madi olivo-strong fs-6 mb-0 text-center p-0">Renata & Sergio</h1>
+        <nav class="navbar navbar-expand-lg sticky-top bg-beige-lino p-0 z-3" style="z-index: 1000!Important;">
+            <div class="textura-papel container-fluid p-2">
+                <!-- Logo y Título -->
+                <div class="row justify-content-center align-items-center p-0">
+                    <div class="imgContainerSm" style="width: 80px;">
+                        <a href="#home" class="d-flex">
+                            <!-- EAGER: Logo visible inmediatamente -->
+                            <img src="assets/images/logo.webp" 
+                                 class="img-fluid" 
+                                 alt="Logo"
+                                 loading="eager"
+                                 width="80"
+                                 height="80">
+                        </a>
                     </div>
-                    <!-- Botón Hamburguesa -->
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <!-- Contenido Colapsable -->
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav ms-auto libre-caslon-display fs-6">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#nosCasamos">Nos casamos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#cuandoDonde">Cuándo y dónde</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#dresscode">Dress Code</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#momentos">Momentos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#confirmacion">Confirmación</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <h1 class="ms-madi olivo-strong fs-6 mb-0 text-center p-0">Renata & Sergio</h1>
                 </div>
+                <!-- Botón Hamburguesa -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Contenido Colapsable -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto libre-caslon-display fs-6">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#nosCasamos">Nos casamos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#cuandoDonde">Cuándo y dónde</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#dresscode">Dress Code</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#momentos">Momentos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#confirmacion">Confirmación</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
         <section id="home" class="overflow-hidden p-0 z-0">
             <div class="container-fluid p-0 h-100 w-100 position-relative overflow-hidden">
-                <img src="assets/images/home.webp" class="home-picture" alt="Imagen de fondo de inicio">
+                <!-- EAGER: Imagen principal del hero -->
+                <img src="assets/images/home.webp" 
+                     class="home-picture" 
+                     alt="Renata y Sergio"
+                     loading="eager"
+                     fetchpriority="high">
                 <div class="beige text-center d-md-none d-block z-0 position-absolute top-0 pt-5 mt-5 start-50 translate-middle w-100">
-                        <div class="text-center rounded-4 ms-madi encabezado">
+                    <div class="text-center rounded-4 ms-madi encabezado">
                         Renata & Sergio
                     </div>
                     <div class="text-center libre-caslon-display fs-4 rounded-3">
@@ -175,215 +217,219 @@
             </div>
         </section>
         <section id="momentos" class="container-fluid p-0">
-            <!-- Sección de Galería (agrégala donde quieras en tu página) -->
-        <section id="momentos" class="container-fluid py-5 textura-papel">
-            <div class="container">
-                <p class="encabezado ms-madi olivo-regular text-center mb-5">Momentos</p>
-                
-                <!-- Grid de Galería -->
-                <div class="row g-3">
-                    <!-- Foto 1 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto1.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 1"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto1.jpg">
-                        </div>
-                    </div>
+            <section id="momentos" class="container-fluid py-5 textura-papel">
+                <div class="container">
+                    <p class="encabezado ms-madi olivo-regular text-center mb-5">Momentos</p>
                     
-                    <!-- Foto 2 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto2.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 2"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto2.jpg">
+                    <!-- Grid de Galería - TODAS CON LAZY LOADING -->
+                    <div class="row g-3">
+                        <!-- Foto 1 -->
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto1.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 1"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto1.webp">
+                            </div>
                         </div>
-                    </div>
-                    
-                    <!-- Foto 3 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto3.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 3"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto3.jpg">
-                        </div>
-                    </div>
-                    
-                    <!-- Foto 4 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto4.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 4"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto4.jpg">
-                        </div>
-                    </div>
-
-                    <!-- Foto 5 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto5.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 5"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto5.jpg">
-                        </div>
-                    </div>
-
-                    <!-- Foto 6 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto6.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 6"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto6.jpg">
-                        </div>
-                    </div>
-
-                    <!-- Foto 7 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto7.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 7"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto7.jpg">
-                        </div>
-                    </div>
-
-                    <!-- Foto 8 -->
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto8.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 8"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto8.jpg">
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto9.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 9"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto9.jpg">
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto10.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 10"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto10.jpg">
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto11.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 11"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto11.jpg">
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto12.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 12"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto12.jpg">
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto13.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 13"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto13.jpg">
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto14.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 14"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto14.jpg">
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <div class="gallery-item">
-                            <img src="assets/images/gallery/foto15.jpg" 
-                                class="img-fluid rounded" 
-                                alt="Foto 15"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#lightboxModal"
-                                data-bs-img="assets/images/gallery/foto15.jpg">
-                        </div>
-                    </div>
-
-            
-                    
-                    <!-- Agrega más fotos siguiendo el mismo patrón -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Modal Lightbox -->
-        <div class="modal fade" id="lightboxModal" tabindex="-1" aria-labelledby="lightboxModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
-                <div class="modal-content bg-transparent border-0">
-                    <div class="modal-body p-0 position-relative">
-                        <!-- Botón Cerrar -->
-                        <button type="button" 
-                                class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-3" 
-                                data-bs-dismiss="modal" 
-                                aria-label="Close"
-                                style="filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));"></button>
                         
-                        <!-- Imagen del Lightbox -->
-                        <img id="lightboxImage" 
-                            src="" 
-                            class="img-fluid w-100 rounded" 
-                            alt="Imagen ampliada">
+                        <!-- Foto 2 -->
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto2.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 2"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto2.webp">
+                            </div>
+                        </div>
+                        
+                        <!-- Foto 3 -->
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto3.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 3"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto3.webp">
+                            </div>
+                        </div>
+                        
+                        <!-- Foto 4 -->
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto4.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 4"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto4.webp">
+                            </div>
+                        </div>
+
+                        <!-- Fotos 5-15 con lazy loading -->
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto5.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 5"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto5.webp">
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto6.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 6"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto6.webp">
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto7.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 7"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto7.webp">
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto8.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 8"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto8.webp">
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto9.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 9"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto9.webp">
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto10.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 10"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto10.webp">
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto11.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 11"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto11.webp">
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto12.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 12"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto12.webp">
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto13.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 13"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto13.webp">
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto14.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 14"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto14.webp">
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <div class="gallery-item">
+                                <img src="assets/images/gallery/foto15.webp" 
+                                    class="img-fluid rounded" 
+                                    alt="Momento 15"
+                                    loading="lazy"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#lightboxModal"
+                                    data-bs-img="assets/images/gallery/foto15.webp">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Modal Lightbox -->
+            <div class="modal fade" id="lightboxModal" tabindex="-1" aria-labelledby="lightboxModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content bg-transparent border-0">
+                        <div class="modal-body p-0 position-relative">
+                            <button type="button" 
+                                    class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-3" 
+                                    data-bs-dismiss="modal" 
+                                    aria-label="Close"
+                                    style="filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));"></button>
+                            
+                            <img id="lightboxImage" 
+                                src="" 
+                                class="img-fluid w-100 rounded" 
+                                alt="Imagen ampliada">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
         </section>
         <section class="container-fluid p-0">
             <div class="container-fluid p-0 vh-100 vw-100 overflow-hidden">
@@ -394,7 +440,11 @@
                     <div class="position-absolute top-50 start-50 translate-middle text-center">
                         <div class="row justify-content-evenly align-items-center g-2 vh-100 vw-100">
                             <div class="col-md-5 col-12 bg-beige libre-caslon-display position-relative">
-                                <img src="/assets/images/ceremonia.png" class="w-100 h-100 object-fit-cover object-fit-bottom blur z-n1" alt="Ceremonia">
+                                <!-- LAZY: Imagen de ceremonia -->
+                                <img src="assets/images/ceremonia.webp" 
+                                     class="w-100 h-100 object-fit-cover object-fit-bottom blur z-n1" 
+                                     alt="Ceremonia"
+                                     loading="lazy">
                                 <div class="position-absolute top-50 start-50 translate-middle text-center text-black shadow-lg z-1 px-3">
                                     <p class="fs-1">Ceremonia</p>
                                     <p class="fs-6">16:00 horas</p>
@@ -402,7 +452,11 @@
                                 </div>
                             </div>
                             <div class="col-md-5 col-12 bg-beige libre-caslon-display position-relative">
-                                <img src="/assets/images/recepcion.png" class="w-100 h-100 object-fit-cover object-fit-bottom blur z-n1" alt="Recepción">
+                                <!-- LAZY: Imagen de recepción -->
+                                <img src="assets/images/recepcion.webp" 
+                                     class="w-100 h-100 object-fit-cover object-fit-bottom blur z-n1" 
+                                     alt="Recepción"
+                                     loading="lazy">
                                 <div class="position-absolute top-50 start-50 translate-middle text-center beige shadow-lg z-1 px-3">
                                     <p class="fs-1">Recepción</p>
                                     <p class="fs-6">17:00 hrs</p>
@@ -418,14 +472,22 @@
             <div class="row justify-content-evenly align-items-center pb-5 textura-papel d-none d-md-flex">
                 <p class="encabezado ms-madi olivo-regular text-center z-3 m-0">Dress Code</p>
                 <div class="col-md-3 col-12 bg-beige libre-caslon-display position-relative d-flex flex-row justify-content-center py-5">
-                    <img src="/assets/images/male.png" class="object-fit-contain p-5  z-n1 dresscode" alt="Ejemplo de vestimenta hombre">
+                    <!-- LAZY: Imagen dress code hombre -->
+                    <img src="assets/images/male.webp" 
+                         class="object-fit-contain p-5 z-n1 dresscode" 
+                         alt="Dress code hombre"
+                         loading="lazy">
                     <div class="position-absolute top-50 start-50 w-50 translate-middle text-center beige shadow-lg z-1">
                         <p class="fs-1">Hombre</p>
                         <a class="fs-6 text-white" href="https://mx.pinterest.com/renataurdapilleta/dresscode-hombres/?invite_code=6c8cb429a5504ae0a912f4af922daf38&sender=849350948383026582">Ver ejemplos</a>
                     </div>
                 </div>
                 <div class="col-md-3 col-12 bg-beige libre-caslon-display position-relative d-flex flex-row justify-content-center py-5">
-                    <img src="/assets/images/female.png" class="object-fit-contain p-5 z-n1 dresscode" alt="Ejemplo de vestimenta mujer">
+                    <!-- LAZY: Imagen dress code mujer -->
+                    <img src="assets/images/female.webp" 
+                         class="object-fit-contain p-5 z-n1 dresscode" 
+                         alt="Dress code mujer"
+                         loading="lazy">
                     <div class="position-absolute top-50 start-50 w-50 translate-middle text-center beige shadow-lg z-1">
                         <p class="fs-1">Mujer</p>
                         <a class="fs-6 text-white" href="https://mx.pinterest.com/renataurdapilleta/dresscode-mujeres/?invite_code=e229cbfafd9842e88079b08074fbf643&sender=849350948383026582">Ver ejemplos</a>
@@ -435,14 +497,20 @@
             <div class="row justify-content-evenly align-items-center pb-5 textura-papel d-md-none">
                 <p class="encabezado ms-madi olivo-regular text-center z-3 m-0">Dress Code</p>
                 <div class="col-md-4 col-6 bg-beige libre-caslon-display position-relative d-flex flex-row justify-content-center py-1">
-                    <img src="/assets/images/male.png" class="img-fluid object-fit-contain z-n1" alt="Ejemplo de vestimenta hombre">
+                    <img src="assets/images/male.webp" 
+                         class="img-fluid object-fit-contain z-n1" 
+                         alt="Dress code hombre"
+                         loading="lazy">
                     <div class="position-absolute top-50 start-50 w-50 translate-middle text-center beige shadow-lg z-1">
                         <p class="fs-1">Hombre</p>
                         <a class="fs-6 text-white" href="https://mx.pinterest.com/renataurdapilleta/dresscode-hombres/?invite_code=6c8cb429a5504ae0a912f4af922daf38&sender=849350948383026582">Ver ejemplos</a>
                     </div>
                 </div>
                 <div class="col-md-4 col-6 bg-beige libre-caslon-display position-relative d-flex flex-row justify-content-center py-1">
-                    <img src="/assets/images/female.png" class="img-fluid object-fit-contain z-n1" alt="Ejemplo de vestimenta mujer">
+                    <img src="assets/images/female.webp" 
+                         class="img-fluid object-fit-contain z-n1" 
+                         alt="Dress code mujer"
+                         loading="lazy">
                     <div class="position-absolute top-50 start-50 w-50 translate-middle text-center beige shadow-lg z-1">
                         <p class="fs-1">Mujer</p>
                         <a class="fs-6 text-white" href="https://mx.pinterest.com/renataurdapilleta/dresscode-mujeres/?invite_code=e229cbfafd9842e88079b08074fbf643&sender=849350948383026582">Ver ejemplos</a>
@@ -454,7 +522,11 @@
             <div class="py-5 row justify-content-evenly align-items-center pb-5 textura-papel vh-100">
                 <p class="encabezado ms-madi olivo-regular text-center z-3 m-0">Mesa de regalos</p>
                 <div class="col-md-4 col-12 bg-beige libre-caslon-display position-relative d-flex flex-row justify-content-center">
-                    <img src="/assets/images/post1.jpg" class="img-fluid object-fit-contain blur z-n1 dresscode" alt="Mesa de regalos">
+                    <!-- LAZY: Imagen mesa de regalos -->
+                    <img src="assets/images/post1.webp" 
+                         class="img-fluid object-fit-contain blur z-n1 dresscode" 
+                         alt="Mesa de regalos"
+                         loading="lazy">
                     <div class="position-absolute bg-olivo top-50 start-50 translate-middle text-center beige shadow-lg z-1 px-5">
                         <p class="subtitulo ms-madi">Próximamente</p>
                     </div>
@@ -465,23 +537,25 @@
             <div class="row justify-content-evenly align-items-center pb-5 textura-papel vh-100">
                 <p class="encabezado ms-madi olivo-regular text-center z-3 m-0">Hospedaje</p>
                 <div class="col-md-5 col-12 bg-beige libre-caslon-display p-2 position-relative d-flex flex-row justify-content-center">
-                        <img src="/assets/images/Hospedaje.jpg" alt="Hospedaje" class="img-fluid object-fit-contain z-n1">
+                    <!-- LAZY: Imagen hospedaje -->
+                    <img src="assets/images/Hospedaje.webp" 
+                         alt="Hotel Dreams Huatulco" 
+                         class="img-fluid object-fit-contain z-n1"
+                         loading="lazy">
                 </div>
-                 <div class="container-fluid col-md-5 col-12 bg-beige libre-caslon-display p-2 position-relative d-flex flex-row justify-content-center">
-                    <p class="text-center fs-4 olivo-regular">Decidimos que un día de fiesta no era suficiente, así que nos llevamos la celebración al <b>Hotel DREAMS HUATULCO</b>. Queremos sol, arena y a nuestras personas favoritas brindando con nosotros. <br> <br> Para que nadie se quede fuera, usen el código <b>BODARENYSER</b> al reservar su habitación para obtener un precio especial de invitado <b>VIP</b>.
-                        <br>
-                        <br>
+                <div class="container-fluid col-md-5 col-12 bg-beige libre-caslon-display p-2 position-relative d-flex flex-row justify-content-center">
+                    <p class="text-center fs-4 olivo-regular">
+                        Decidimos que un día de fiesta no era suficiente, así que nos llevamos la celebración al <b>Hotel DREAMS HUATULCO</b>. Queremos sol, arena y a nuestras personas favoritas brindando con nosotros.
+                        <br><br>
+                        Para que nadie se quede fuera, usen el código <b>BODARENYSER</b> al reservar su habitación para obtener un precio especial de invitado <b>VIP</b>.
+                        <br><br>
                         <a href="assets/images/Pasos_de_reserva.mov" target="_blank" class="text-decoration-none text-white btn btn-success">¿Cómo usarlo?</a>
-                        
                         <a href="https://www.hyattinclusivecollection.com/es/resorts-y-hoteles/dreams/mexico/huatulco-resort-spa/" target="_blank" class="text-decoration-none text-white btn btn-success">Hotel <i class="bi bi-arrow-right"></i></a>
-                        <br>
-                        <br>
-                        
                     </p>
                 </div>
-                <p class=" text-center fs-6 olivo-regular libre-caslon-display">
-                Si necesitas ayuda para hacer tu reservación puedes comunicarte con nosotros a través whatsapp
-                <a href="https://wa.me/525512283053" target="_blank" class="text-decoration-none text-white btn btn-success"><i class="bi bi-whatsapp"></i></a>
+                <p class="text-center fs-6 olivo-regular libre-caslon-display">
+                    Si necesitas ayuda para hacer tu reservación puedes comunicarte con nosotros a través de WhatsApp
+                    <a href="https://wa.me/525512283053" target="_blank" class="text-decoration-none text-white btn btn-success"><i class="bi bi-whatsapp"></i></a>
                 </p>
             </div>
         </section>
@@ -489,7 +563,7 @@
             <div class="row justify-content-evenly align-items-center pb-5 textura-papel vh-100">
                 <p class="encabezado ms-madi olivo-regular text-center z-3 m-0">Confirmación de Asistencia</p>
                 
-                <div class=" col-md-6 col-12">
+                <div class="col-md-6 col-12">
                     <div class="card border-0 shadow-lg bg-beige">
                         <div class="card-body p-4 p-md-5">
                             <h5 class="card-title text-center libre-caslon-display fs-6 mb-4 olivo-regular">
@@ -541,25 +615,61 @@
 
     <footer>
     </footer>
-    <script src="js/anime.esm.min.js"></script>
-    <script src="js/bootstrap.bundle.js"></script>
-    <script src="js/script.js"></script>
+    
+    <!-- Scripts con defer para mejor performance -->
+    <script src="js/bootstrap.bundle.js" defer></script>
+    <script src="js/script.js" defer></script>
     <script type="module" src="js/main.js"></script>
     
     <!-- Script para formulario de confirmación -->
     <script>
+        // Detectar si viene un código en la URL (ej: ?codigo=FAM001)
+        window.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const codigo = urlParams.get('codigo');
+            
+            // Si hay código en la URL, redirigir automáticamente a invitaciones.html
+            if (codigo) {
+                window.location.href = `invitaciones.html?codigo=${codigo}`;
+            }
+            
+            // Hacer que el sobre redirija a la sección de confirmación
+            const envelopeButton = document.getElementById('envelopeButton');
+            if (envelopeButton) {
+                envelopeButton.addEventListener('click', function() {
+                    setTimeout(function() {
+                        const confirmacionSection = document.getElementById('confirmacion');
+                        if (confirmacionSection) {
+                            confirmacionSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    }, 2000);
+                });
+            }
+        });
+        
+        // Manejar el formulario de confirmación
         document.getElementById('form-confirmacion-codigo')?.addEventListener('submit', function(e) {
             e.preventDefault();
             
             const codigo = document.getElementById('codigo-invitacion').value.trim().toUpperCase();
             
             if (codigo) {
-                // Redirigir a la página de confirmación con el código
                 window.location.href = `invitaciones.html?codigo=${codigo}`;
             } else {
                 alert('Por favor, ingresa tu código de invitación');
             }
         });
+        
+        // Lazy loading mejorado para el modal lightbox
+        const lightboxModal = document.getElementById('lightboxModal');
+        if (lightboxModal) {
+            lightboxModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const imgSrc = button.getAttribute('data-bs-img');
+                const lightboxImage = document.getElementById('lightboxImage');
+                lightboxImage.src = imgSrc;
+            });
+        }
     </script>
 </body>
 </html>
